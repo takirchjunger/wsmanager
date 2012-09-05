@@ -5,9 +5,9 @@ import javax.servlet.ServletException;
 
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.transport.servlet.CXFServlet;
+import org.apache.cxf.transport.servlet.ServletController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class WebserviceServlet extends CXFServlet
@@ -17,7 +17,7 @@ public class WebserviceServlet extends CXFServlet
 
 	private static final Logger LOG = LoggerFactory.getLogger(WebserviceServlet.class);
 
-	private WebserviceManager webserviceManager;
+	private boolean disableAddressUpdates;
 
 	public WebserviceServlet()
 	{
@@ -25,7 +25,7 @@ public class WebserviceServlet extends CXFServlet
 	}
 
 	@Override
-	public void init(ServletConfig servletConfig) throws ServletException
+	public void init(final ServletConfig servletConfig) throws ServletException
 	{
 		super.init(servletConfig);
 
@@ -40,7 +40,7 @@ public class WebserviceServlet extends CXFServlet
 			LOG.info("Publishing webservices...");
 			try
 			{
-				manager.publishServices();
+				manager.publishAllServices();
 			}
 			catch (PublishManagedWebserviceException e)
 			{
@@ -49,16 +49,37 @@ public class WebserviceServlet extends CXFServlet
 		}
 	}
 
+	@Override
+	public ServletController createServletController(final ServletConfig servletConfig)
+	{
+		/*
+		 * Eigen ServletController implementatie, onder andere om de default services
+		 * pagina van CXF te customizen
+		 */
+		final ServletController newController =
+			new WebserviceServletController(getWebserviceManager(), servletTransportFactory,
+				servletConfig, getServletContext(), bus);
+
+		/*
+		 * Blijf compatible met AbstractCXFServlet#createServletController(ServletConfig
+		 * servletConfig)
+		 */
+		if (servletConfig.getInitParameter("disable-address-updates") == null)
+			newController.setDisableAddressUpdates(disableAddressUpdates);
+
+		return newController;
+	}
+
 	public WebserviceManager getWebserviceManager()
 	{
-		if (webserviceManager == null)
-		{
-			WebApplicationContext webApplicationContext =
-				WebApplicationContextUtils.getWebApplicationContext(getServletConfig()
-					.getServletContext());
-			webserviceManager = webApplicationContext.getBean(WebserviceManager.class);
-		}
-		return webserviceManager;
+		return WebApplicationContextUtils.getWebApplicationContext(
+			getServletConfig().getServletContext()).getBean(WebserviceManager.class);
+	}
+
+	@Override
+	public void setDisableAddressUpdates(boolean disableAddressUpdates)
+	{
+		this.disableAddressUpdates = disableAddressUpdates;
 	}
 
 }
