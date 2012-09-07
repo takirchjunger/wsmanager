@@ -123,12 +123,15 @@ public class WebserviceManager implements ApplicationContextAware, InitializingB
 
 	public boolean isRunning(final QName name)
 	{
+		Preconditions.checkNotNull(name);
+
 		return runningEndpoints.keySet().contains(name);
 	}
 
 	public boolean isRunning(String name)
 	{
-		Preconditions.checkNotNull(name);
+		if (Strings.isNullOrEmpty(name))
+			return false;
 
 		for (Entry<QName, Server> endpoint : runningEndpoints.entrySet())
 		{

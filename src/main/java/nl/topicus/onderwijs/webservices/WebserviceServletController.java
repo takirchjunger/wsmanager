@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,11 +20,31 @@ public class WebserviceServletController extends ServletController
 
 	private final WebserviceManager wsManager;
 
-	public WebserviceServletController(WebserviceManager wsManager, ServletTransportFactory df,
-			ServletConfig config, ServletContext context, Bus b)
+	private final static String MANAGER_RELATIVE_PATH = DEFAULT_LISTINGS_CLASSIFIER + "/manager";
+
+	public WebserviceServletController(final WebserviceManager wsManager,
+			final ServletTransportFactory df, final ServletConfig config,
+			final ServletContext context, final Bus b)
 	{
 		super(df, config, context, b);
 		this.wsManager = wsManager;
+	}
+
+	@Override
+	public void invoke(HttpServletRequest request, HttpServletResponse res) throws ServletException
+	{
+		if (request.getRequestURI().endsWith(MANAGER_RELATIVE_PATH)
+			|| request.getRequestURI().endsWith(MANAGER_RELATIVE_PATH + "/"))
+			try
+			{
+				res.getWriter().write("Manager not yet implemented");
+			}
+			catch (IOException e)
+			{
+				throw new RuntimeException(e);
+			}
+		else
+			super.invoke(request, res);
 	}
 
 	@Override
@@ -35,7 +56,10 @@ public class WebserviceServletController extends ServletController
 		response.getWriter().write(
 			"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" "
 				+ "\"http://www.w3.org/TR/html4/loose.dtd\">");
-		response.getWriter().write("<html><head><title>Managed webservices</title></head><body>");
+		response.getWriter().write("<html><head><title>Managed webservices</title>");
+		response.getWriter().write(
+			"<link type=\"text/css\" rel=\"stylesheet\" href=\"css/wsm.css\">");
+		response.getWriter().write("</head><body>");
 		response.getWriter().write("<img src=\"img/topicus.jpg\" alt=\"topicus\"/>");
 		response.getWriter().write(
 			String.format("<br/>There are %d managed webservices running", wsManager
@@ -56,7 +80,7 @@ public class WebserviceServletController extends ServletController
 	protected void generateUnformattedServiceList(HttpServletRequest request,
 			HttpServletResponse response) throws IOException
 	{
-		// Geen gedoe met wel of niet gestylede service list overzichten
+		// Geen gedoe met wel of niet gestylede service list pagina
 		generateServiceList(request, response);
 	}
 
