@@ -13,8 +13,15 @@
 	</listener>
 
 	<servlet>
-		<servlet-name>WebserviceServlet</servlet-name>
+		<servlet-name>ManagerServlet</servlet-name>
 		<display-name>Webserver manager servlet</display-name>
+		<servlet-class>nl.topicus.onderwijs.webservices.ManagerServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>WebserviceServlet</servlet-name>
+		<display-name>CXF Servlet</display-name>
 		<servlet-class>nl.topicus.onderwijs.webservices.WebserviceServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
@@ -22,5 +29,10 @@
 	<servlet-mapping>
 		<servlet-name>WebserviceServlet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ManagerServlet</servlet-name>
+		<url-pattern>/cxf/manager</url-pattern>
 	</servlet-mapping>
 </web-app>

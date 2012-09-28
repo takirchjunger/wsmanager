@@ -7,7 +7,6 @@ import org.apache.cxf.BusFactory;
 import org.apache.cxf.transport.servlet.CXFServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 public class WebserviceServlet extends CXFServlet
 {
@@ -16,11 +15,9 @@ public class WebserviceServlet extends CXFServlet
 
 	private static final Logger LOG = LoggerFactory.getLogger(WebserviceServlet.class);
 
-	private boolean disableAddressUpdates;
-
 	public WebserviceServlet()
 	{
-		LOG.info("Starting Webservice Manager Servlet...");
+		LOG.info("Starting CXF servlet...");
 	}
 
 	@Override
@@ -28,7 +25,8 @@ public class WebserviceServlet extends CXFServlet
 	{
 		super.init(servletConfig);
 
-		final WebserviceManager manager = getWebserviceManager();
+		final WebserviceManager manager =
+			WebserviceManager.getFromServletContext(getServletContext());
 
 		if (manager == null)
 			LOG.error("No WebserviceManager defined. Managed webservices are not published!");
@@ -47,28 +45,5 @@ public class WebserviceServlet extends CXFServlet
 			}
 		}
 	}
-
-	/*
-	 * @Override public ServletController createServletController(final ServletConfig
-	 * servletConfig) { Eigen ServletController implementatie, onder andere om de default
-	 * services pagina van CXF te customizen final ServletController newController = new
-	 * WebserviceServletController(getWebserviceManager(), servletConfig,
-	 * getServletContext(), bus); Blijf compatible met
-	 * AbstractCXFServlet#createServletController(ServletConfig servletConfig) if
-	 * (servletConfig.getInitParameter("disable-address-updates") == null)
-	 * newController.setDisableAddressUpdates(disableAddressUpdates); return
-	 * newController; }
-	 */
-
-	public WebserviceManager getWebserviceManager()
-	{
-		return WebApplicationContextUtils.getWebApplicationContext(
-			getServletConfig().getServletContext()).getBean(WebserviceManager.class);
-	}
-
-	/*
-	 * @Override public void setDisableAddressUpdates(boolean disableAddressUpdates) {
-	 * this.disableAddressUpdates = disableAddressUpdates; }
-	 */
 
 }

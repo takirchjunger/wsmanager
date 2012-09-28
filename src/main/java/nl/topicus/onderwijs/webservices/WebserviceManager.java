@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.jws.WebService;
+import javax.servlet.ServletContext;
 import javax.xml.namespace.QName;
 
 import nl.topicus.onderwijs.webservices.annotations.ManagedWebservice;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -91,7 +93,7 @@ public class WebserviceManager implements ApplicationContextAware, InitializingB
 			factory.setServiceName(new QName(targetNamespace, wsAnnotation.serviceName()));
 		}
 
-		List<Interceptor< ? extends Message>> interceptors = Lists.newArrayList();
+		final List<Interceptor< ? extends Message>> interceptors = Lists.newArrayList();
 
 		interceptors.add(new AccessRestrictingInterceptor()
 		{
@@ -99,7 +101,7 @@ public class WebserviceManager implements ApplicationContextAware, InitializingB
 			@Override
 			public boolean restrictionApplies()
 			{
-				return true;
+				return false;
 			}
 		});
 		factory.setInInterceptors(interceptors);
@@ -140,6 +142,17 @@ public class WebserviceManager implements ApplicationContextAware, InitializingB
 		return runningEndpoints;
 	}
 
+	public Server getRunningEndpoint(String serviceName)
+	{
+		for (Entry<QName, Server> endpoint : runningEndpoints.entrySet())
+		{
+			if (serviceName.equals(endpoint.getValue().getEndpoint().getService().getName()
+				.getLocalPart()))
+				return endpoint.getValue();
+		}
+		return null;
+	}
+
 	public boolean isRunning(final QName name)
 	{
 		Preconditions.checkNotNull(name);
@@ -147,18 +160,22 @@ public class WebserviceManager implements ApplicationContextAware, InitializingB
 		return runningEndpoints.keySet().contains(name);
 	}
 
-	public boolean isRunning(String name)
+	public boolean isRunning(String serviceName)
 	{
-		if (Strings.isNullOrEmpty(name))
+		if (Strings.isNullOrEmpty(serviceName))
 			return false;
 
-		for (Entry<QName, Server> endpoint : runningEndpoints.entrySet())
-		{
-			if (name
-				.equals(endpoint.getValue().getEndpoint().getService().getName().getLocalPart()))
-				return true;
-		}
-		return false;
+		return getRunningEndpoint(serviceName) != null;
+	}
+
+	/**
+	 * Haalt de {@link WebserviceManager} instantie op voor een gegeven
+	 * {@link ServletContext}
+	 */
+	public static WebserviceManager getFromServletContext(ServletContext context)
+	{
+		return WebApplicationContextUtils.getWebApplicationContext(context).getBean(
+			WebserviceManager.class);
 	}
 
 }

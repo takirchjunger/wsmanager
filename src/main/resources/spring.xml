@@ -12,6 +12,10 @@
 
 	<bean id="webserviceManager" class="nl.topicus.onderwijs.webservices.WebserviceManager"/>
 
+    <bean id="counterRepository" class="org.apache.cxf.management.counters.CounterRepository">
+        <property name="bus" ref="cxf" />
+    </bean>
+
 	<context:component-scan base-package="nl.topicus.onderwijs.demo">
 		<context:include-filter type="annotation"
 			expression="nl.topicus.onderwijs.webservices.annotations.ManagedWebservice" />
