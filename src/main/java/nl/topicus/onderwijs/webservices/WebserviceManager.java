@@ -1,5 +1,6 @@
 package nl.topicus.onderwijs.webservices;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -7,9 +8,12 @@ import javax.jws.WebService;
 import javax.xml.namespace.QName;
 
 import nl.topicus.onderwijs.webservices.annotations.ManagedWebservice;
+import nl.topicus.onderwijs.webservices.interceptors.AccessRestrictingInterceptor;
 
 import org.apache.cxf.endpoint.Server;
+import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
+import org.apache.cxf.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -18,6 +22,7 @@ import org.springframework.context.ApplicationContextAware;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class WebserviceManager implements ApplicationContextAware, InitializingBean
@@ -85,6 +90,20 @@ public class WebserviceManager implements ApplicationContextAware, InitializingB
 		{
 			factory.setServiceName(new QName(targetNamespace, wsAnnotation.serviceName()));
 		}
+
+		List<Interceptor< ? extends Message>> interceptors = Lists.newArrayList();
+
+		interceptors.add(new AccessRestrictingInterceptor()
+		{
+
+			@Override
+			public boolean restrictionApplies()
+			{
+				return true;
+			}
+		});
+		factory.setInInterceptors(interceptors);
+
 		final Server srv = factory.create();
 		runningEndpoints.put(srv.getEndpoint().getEndpointInfo().getName(), srv);
 	}
