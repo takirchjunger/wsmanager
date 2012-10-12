@@ -1,3 +1,25 @@
 body {
 	padding-top: 60px;
 }
+
+table {
+	margin-top: 30px;
+}
+
+caption {
+	text-align: left;
+	font-size: 1.2em;
+	font-weight: bold;
+	font-style: italic;
+}
+
+ul.actions {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.actions li {
+	float: left;
+	margin-right: 15px;
+}

@@ -28,7 +28,23 @@
     </div>
     
     <div class="container">
-    	<h1>Overzicht</h1>	
+    	<h1>Overzicht</h1>
+    	<table class="table table-bordered">
+    		<caption>Webservices</caption>
+    		<thead>
+    			<tr>
+    				<th>Naam</th>
+    				<th>Endpoint</th>
+    				<th>Status</th>
+    				<th></th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    		   	<tr wicket:id="services">
+    				<td wicket:id="cells"><span wicket:id="cell"></span></td>
+    			</tr>
+    		</tbody>
+    	</table>	
     </div>
     
 	</body>

@@ -15,6 +15,10 @@ public class WicketApplication extends WebApplication
 	public void init()
 	{
 		super.init();
+
+		getMarkupSettings().setStripWicketTags(true);
+		getMarkupSettings().setStripComments(true);
+
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
 	}
 
