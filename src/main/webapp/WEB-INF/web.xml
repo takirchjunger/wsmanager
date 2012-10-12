@@ -12,13 +12,31 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<servlet>
+	<filter>
+		<filter-name>wicket.webservices</filter-name>
+		<filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+		<init-param>
+			<param-name>applicationFactoryClassName</param-name>
+			<param-value>org.apache.wicket.spring.SpringWebApplicationFactory</param-value>
+		</init-param>
+		<init-param>
+			<param-name>applicationBean</param-name>
+			<param-value>wicketApplication</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>wicket.webservices</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- <servlet>
 		<servlet-name>ManagerServlet</servlet-name>
 		<display-name>Webserver manager servlet</display-name>
 		<servlet-class>nl.topicus.onderwijs.webservices.ManagerServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+ -->
 	<servlet>
 		<servlet-name>WebserviceServlet</servlet-name>
 		<display-name>CXF Servlet</display-name>
@@ -31,8 +49,8 @@
 		<url-pattern>/services/*</url-pattern>
 	</servlet-mapping>
 
-	<servlet-mapping>
+	<!-- <servlet-mapping>
 		<servlet-name>ManagerServlet</servlet-name>
 		<url-pattern>/cxf/manager</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 </web-app>

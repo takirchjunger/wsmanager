@@ -20,5 +20,8 @@
 		<context:include-filter type="annotation"
 			expression="nl.topicus.onderwijs.webservices.annotations.ManagedWebservice" />
 	</context:component-scan>
+	
+	<bean id="wicketApplication" class="nl.topicus.onderwijs.webservices.ui.WicketApplication">
+	</bean>
 
 </beans>
