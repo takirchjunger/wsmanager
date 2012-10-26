@@ -14,20 +14,17 @@ import org.apache.cxf.transport.servlet.ServletController;
 public class WebserviceServletController extends ServletController
 {
 
-	private final WebserviceManager wsManager;
-
 	private final static String MANAGER_RELATIVE_PATH = DEFAULT_LISTINGS_CLASSIFIER + "/manager";
 
-	public WebserviceServletController(final WebserviceManager wsManager,
-			DestinationRegistry destinationRegistry, ServletConfig config,
-			HttpServlet serviceListGenerator)
+	public WebserviceServletController(final DestinationRegistry destinationRegistry,
+			final ServletConfig config, final HttpServlet serviceListGenerator)
 	{
 		super(destinationRegistry, config, serviceListGenerator);
-		this.wsManager = wsManager;
 	}
 
 	@Override
-	public void invoke(HttpServletRequest request, HttpServletResponse res) throws ServletException
+	public void invoke(final HttpServletRequest request, final HttpServletResponse res)
+			throws ServletException
 	{
 		if (request.getRequestURI().endsWith(MANAGER_RELATIVE_PATH)
 			|| request.getRequestURI().endsWith(MANAGER_RELATIVE_PATH + "/"))

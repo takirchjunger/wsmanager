@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org">
-	<head>
-		<meta charset="utf-8" />
-		<title>Webservice Manager</title>
-		<link rel="stylesheet" href="css/wsm.css" type="text/css" media="screen" title="Stylesheet" />
-	</head>
-	<body>
+<head>
+	<meta charset="utf-8" />
+	<title>Webservice Manager</title>
+	<link rel="stylesheet" href="css/wsm.css" type="text/css" media="screen" title="Stylesheet" />
+	<script type="text/javascript">
+		window.onload = function()
+		{
+			$(document).ready(function() {
+				$('.icon-ok').mouseover(function() {
+					$(this).removeClass().addClass('icon-remove');
+				}).mouseout(function() {
+					$(this).removeClass().addClass('icon-ok');
+				});
+			});
+		}
+	</script>
+</head>
+<body>
 
 	<div class="navbar navbar-inverse navbar-fixed-top">
     	<div class="navbar-inner">
@@ -25,11 +37,10 @@
 				</div>
 			</div>
 		</div>
-    </div>
-    
+    </div> 
     <div class="container">
     	<h1>Overzicht</h1>
-    	<table class="table table-bordered">
+    	<table class="table table-bordered" wicket:id="services">
     		<caption>Webservices</caption>
     		<thead>
     			<tr>
@@ -39,13 +50,7 @@
     				<th></th>
     			</tr>
     		</thead>
-    		<tbody>
-    		   	<tr wicket:id="services">
-    				<td wicket:id="cells"><span wicket:id="cell"></span></td>
-    			</tr>
-    		</tbody>
     	</table>	
     </div>
-    
-	</body>
+</body>
 </html>

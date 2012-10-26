@@ -22,7 +22,7 @@ public abstract class ConditionalInterceptor extends AbstractSoapInterceptor
 	}
 
 	@Override
-	public void handleMessage(SoapMessage message) throws Fault
+	public void handleMessage(final SoapMessage message) throws Fault
 	{
 		if (evaluate())
 			wrappedInterceptor.handleMessage(message);
