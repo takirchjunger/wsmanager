@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import javax.management.ObjectName;
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
@@ -37,6 +40,11 @@ public class ManagerServlet extends AbstractHTTPServlet
 	public ManagerServlet()
 	{
 		LOG.info("Starting Webservice Manager servlet");
+	}
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+	{
 	}
 
 	@Override

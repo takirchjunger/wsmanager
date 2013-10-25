@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import nl.topicus.cobra.bootstrap.Bootstrap;
 import nl.topicus.onderwijs.webservices.WebserviceManager;
 import nl.topicus.onderwijs.webservices.ui.EndpointBean.ServiceStatus;
 
@@ -18,7 +19,6 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -104,7 +104,7 @@ public class HomePage extends WebPage
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		FontAwesomeBootstrap.renderHead(response);
+		Bootstrap.renderHead(response);
 	}
 
 	private SortableDataProvider<EndpointBean, String> newServicesDataProvider()
@@ -158,16 +158,4 @@ public class HomePage extends WebPage
 		};
 	}
 
-	private class LinkPanel extends Panel
-	{
-		private static final long serialVersionUID = 1L;
-
-		public LinkPanel(String id, String url)
-		{
-			super(id);
-			final ExternalLink link = new ExternalLink("link", url);
-			link.add(new Label("label", url));
-			add(link);
-		}
-	}
 }

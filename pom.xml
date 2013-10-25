@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>nl.topicus.onderwijs</groupId>
 		<artifactId>onderwijs-project-parent</artifactId>
-		<version>2012.2.21</version>
+		<version>2012.2.47</version>
 	</parent>
 
 	<groupId>nl.topicus.onderwijs</groupId>
 	<artifactId>webservices</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.2-SNAPSHOT</version>
 	<name></name>
 	<inceptionYear>2012</inceptionYear>
 	<description></description>
@@ -37,14 +37,12 @@
 		<dependency>
 			<groupId>nl.topicus.cobra</groupId>
 			<artifactId>cobra-kitchensink</artifactId>
-			<classifier>${cobra.classifier}</classifier>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-bootstrap</artifactId>
-			<version>0.3</version>
+			<groupId>nl.topicus.cobra</groupId>
+			<artifactId>cobra-bootstrap</artifactId>
 		</dependency>
-
+		
 		<!-- CXF -->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -87,17 +85,17 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- Jetty -->

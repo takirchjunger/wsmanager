@@ -9,7 +9,6 @@ import javax.servlet.ServletContext;
 import javax.xml.namespace.QName;
 
 import nl.topicus.onderwijs.webservices.annotations.ManagedWebservice;
-import nl.topicus.onderwijs.webservices.interceptors.AccessRestrictingInterceptor;
 
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.interceptor.Interceptor;
@@ -95,15 +94,10 @@ public class WebserviceManager implements ApplicationContextAware, InitializingB
 
 		final List<Interceptor< ? extends Message>> interceptors = Lists.newArrayList();
 
-		interceptors.add(new AccessRestrictingInterceptor()
-		{
-
-			@Override
-			public boolean restrictionApplies()
-			{
-				return false;
-			}
-		});
+		/*
+		 * interceptors.add(new AccessRestrictingInterceptor() {
+		 * @Override public boolean restrictionApplies() { return false; } });
+		 */
 		factory.setInInterceptors(interceptors);
 
 		final Server srv = factory.create();
